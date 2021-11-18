@@ -56,8 +56,8 @@ program power_method
         b = temp/norma
     end do
 
-    write(*,*) "autovalor dominante: ", norma
-    write(*,*) "autovetor do autovalor dominante: ", b 
+    write(*,*) "dominant eigenvalue: ", norma
+    write(*,*) "eigenvalue of dominant eigenvalue: ", b 
 
     deallocate(temp)
     deallocate(b)

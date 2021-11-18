@@ -1,9 +1,9 @@
-program ajuste
+program linear_regression
 
   implicit none
 
   integer :: N,G,i,j,k
-  double precision :: soma
+  double precision :: sum
   double precision, dimension (:,:), allocatable :: a, atransp, gram
   double precision, dimension (:), allocatable :: t,y,x,b
 
@@ -40,42 +40,41 @@ program ajuste
     y(4) = 14.86d0
     y(5) = 17.89d0
    
-  !Construção da matriz A
-  do i=1,N !N linhas --> N pontos
-     do j=1,G+1 !G+1 linhas de acordo com o grau G do ajuste
+  !Building A matrix
+  do i=1,N !N lines --> N points
+     do j=1,G+1 !G+1 lines according with G adjustment
         a(i,j) = t(i)**(j-1)
      end do
   end do
 
-  !Construção da transposta de A
+  !building A transpose
   do i=1,G+1
      do j=1,N
         atransp(i,j) = a(j,i)
      end do
   end do
 
-  !Construção da matriz de Gram
+  !Building Gram matrix
   do i = 1,G+1
      do j = 1,G+1
-        soma = 0.d0
+        sum = 0.d0
         do k=1,N
-           soma = soma + atransp(i,k)*a(k,j)
+           sum = sum + atransp(i,k)*a(k,j)
         end do
-        gram(i,j) = soma
+        gram(i,j) = sum
      end do
   end do
 
-  !Construir o vetor solução
+  !Building solution vector
   do i=1,G+1
-     soma = 0.d0
+     sum = 0.d0
      do k=1,N
-        soma = soma + atransp(i,k)*y(k)
+        sum = sum + atransp(i,k)*y(k)
      end do
-     b(i) = soma
+     b(i) = sum
   end do
 
-  call resolve_sistema(gram,b,x,G+1) !--> ajuste
-  !call resolve_sistema(a,y,x,G+1) !--> polinomio interpolador
+  call solve_system(gram,b,x,G+1) !--> adjustment
   
   write(*,*) x
 
@@ -89,30 +88,30 @@ program ajuste
   
 contains
   
- subroutine resolve_sistema(a,b,x,N)
+ subroutine solve_system(a,b,x,N)
 
     implicit none
     
     integer :: i,j,k,N
-    double precision :: soma
+    double precision :: sum
     double precision, dimension (N) :: x, b
     double precision, dimension (N,N) :: a
 
     x = 0.d0 !chute inicial
-    do k = 1,6000000 !CUIDADO -- PODE SER NECESSÁRIO MUDAR
-       do i=1,N !loop nas linhas
-          soma = 0.d0
-          do j=1,N !loop nas colunas
-             if(j.ne.i) then !escolher termos NÃO-DIAGONAIS
-                soma = soma + a(i,j)*x(j)
+    do k = 1,6000000 !It may be changed
+       do i=1,N !line loop
+          sum = 0.d0
+          do j=1,N !column loop
+             if(j.ne.i) then !choosing not diagonal terms
+                sum = sum + a(i,j)*x(j)
              end if
           end do
-          x(i) = (b(i)-soma)/a(i,i)
+          x(i) = (b(i)-sum)/a(i,i)
        end do
     end do
     
     return
     
-  end subroutine resolve_sistema
+  end subroutine solve_system
   
-end program ajuste
+end program linear_regression

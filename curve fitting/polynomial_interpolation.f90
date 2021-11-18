@@ -1,12 +1,12 @@
-program minimos_quadrados
+program polynomial_interpolation
     implicit none
     integer :: n,g,i,j,k
-    double precision :: soma
+    double precision :: sum
     double precision, dimension (:,:), allocatable :: a, atransp, gram
     double precision, dimension (:), allocatable :: t,y,x,b
 
     n = 5
-    g = 4 !grau do polinomio
+    g = 4 !degree of a polynomial
 
     allocate(atransp(g+1,n))
     allocate(gram(g+1,g+1))
@@ -48,20 +48,20 @@ program minimos_quadrados
 
     do i = 1, g+1
         do j = 1, g+1
-            soma = 0.d0
+            sum = 0.d0
             do k = 1,n
-                soma = soma + atransp(i,k)*a(k,j)
+                sum = sum + atransp(i,k)*a(k,j)
             end do
-            gram(i,j) = soma
+            gram(i,j) = sum
         end do  
     end do
     !vetor solucao
     do i =  1,g+1
-        soma = 0.d0
+        sum = 0.d0
         do k = 1,n
-            soma = soma + atransp(i,k)*y(k)
+            sum = sum + atransp(i,k)*y(k)
         end do
-        b(i) = soma
+        b(i) = sum
     end do
     
     call solve_system(a,y,x,g+1)
@@ -86,7 +86,7 @@ subroutine solve_system(a,b,x,n)
 
     
     x = 0.d0 !initial guess
-    do k = 1,100000 !i assume that after 100 iterations the output will be my the result which i am looking for
+    do k = 1,100000 !i assume that after n iterations the output will be my the result which i am looking for
         do i=1,n
             sum = 0.d0
             do j = 1,n
@@ -101,4 +101,4 @@ subroutine solve_system(a,b,x,n)
 end subroutine solve_system
 
 
-end program minimos_quadrados
+end program polynomial_interpolation

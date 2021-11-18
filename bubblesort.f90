@@ -1,52 +1,51 @@
-program ex03
+program bubblesort
     implicit none
 
-    real, dimension(:), allocatable :: angulo, sorted, teste
+    real, dimension(:), allocatable :: angle, sorted, out
     integer :: i, N
     N = 25
-    allocate(angulo(0:N))
+    allocate(angle(0:N))
     allocate(sorted(0:N))
 
-    allocate(teste(0:N))
+    allocate(out(0:N))
 
-    open(unit=1234, file='teste.dat', status="unknown")
+    open(unit=1234, file='values.dat', status="unknown")
         do i=0,N
-            read(1234,*) angulo(i) ,sorted(i)
+            read(1234,*) angle(i) ,sorted(i)
         end do    
     close(unit=1234)
 
-    teste = bubblesort(N, sorted)
+    out = bubblesort(N, sorted)
     
-    deallocate(teste)
-    deallocate(angulo)
+    deallocate(out)
+    deallocate(angle)
     deallocate(sorted)
     
 contains 
-    function bubblesort(tamanho, vetor)
+    function bubblesort(size, vector)
         implicit none
-        integer :: tamanho, i, j
-        real, dimension(tamanho) :: vetor, bubblesort
+        integer :: size, i, j
+        real, dimension(size) :: vector, bubblesort
         real :: aux
 
-        do i=1,tamanho
+        do i=1,size
             j = i
-            do while ( (j .gt. 0) .and. (vetor(j-1) .gt. vetor(j)))
-                aux = vetor(j)
-                vetor(j) = vetor(j-1)
-                vetor(j-1) = aux
+            do while ( (j .gt. 0) .and. (vector(j-1) .gt. vector(j)))
+                aux = vector(j)
+                vector(j) = vector(j-1)
+                vector(j-1) = aux
                 j = j - 1
             end do
         end do  
 
         open(unit=2608, file='seno_ordenado.dat',status="unknown") 
         do i = 1,25
-                write(2608,*) vetor(i)
+                write(2608,*) vector(i)
         end do
         close(2608)
         
-        return
-        
+        return    
 
     end function bubblesort
 
-end program ex03
+end program bubblesort

@@ -4,7 +4,7 @@ program bissecao
 
   double precision, dimension(:), allocatable :: a, b, x
   integer :: k, N
-  double precision :: erro, tol_inter
+  double precision :: err, tol_inter
 
   
   N = 100
@@ -13,14 +13,14 @@ program bissecao
   allocate(b(0:N))
   allocate(x(0:N))
   
-  erro = 2.222
+  err = 2.222
   tol_inter = 1.d-3
 
   k = 0
   a(0) = -1.0d0
   b(0) = 1.0d0
 
-  do while(erro.ge.tol_inter)
+  do while(err.ge.tol_inter)
      x(k) = (a(k)+b(k))*0.5d0
      if(f(x(k))*f(a(k)).lt.0.d0) then
         a(k+1) = a(k)
@@ -29,7 +29,7 @@ program bissecao
         a(k+1) = x(k)
         b(k+1) = b(k)
      end if
-     erro = dabs(b(k)-a(k))
+     err = dabs(b(k)-a(k))
      k = k + 1
   end do
 

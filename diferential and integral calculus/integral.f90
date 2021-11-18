@@ -17,7 +17,8 @@ program integral
         t(i) = a + i*h
     end do
 
-
+    !uncomment the method you want to use
+    !""""""""""Simple method""""""""""""""""""""""
     !sum = 0.d0
     !do i = 0, n-1
     !    sum = sum + f(t(i))*h 
@@ -51,6 +52,7 @@ program integral
             implicit none
             double precision :: x,f
             
+            !change f to be the function you want to derivate
             f = Exp(-x**2)*dcos(x)
 
             return
